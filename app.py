@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, abort # ✅ Removed unused `request`
+from flask import Flask, jsonify, abort
 app = Flask(__name__)
 
 
@@ -34,4 +34,3 @@ def not_found(e):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
