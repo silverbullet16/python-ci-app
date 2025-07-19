@@ -37,16 +37,10 @@ jobs:
         username: ec2-user
         key: ${{ secrets.EC2_KEY }}
         script: |
-          # Kill existing gunicorn (if running)
           pkill gunicorn || true
-
-          # Clone the repo if not present, else pull latest
           cd ~/python-ci-app || git clone https://github.com/${{ github.repository }} ~/python-ci-app
           cd ~/python-ci-app
           git pull origin main
-
-          # Install dependencies
           pip3 install --user -r requirements.txt
-
-          # Run app with gunicorn in background
-          nohup ~/.local/bin/gunicorn -w 2 -b 0.0.0.0:80 app:app &
+          nohup ~/.local/bin/gunicorn -w 2 -b 0.0.0.0:8000 app:app &
+          echo "Deployment to EC2 completed successfully."
