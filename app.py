@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, abort, render_template, request
+from flask import Flask, jsonify, render_template, request
 import random
 app = Flask(__name__)
 
@@ -48,6 +48,7 @@ def play():
         computer_choice=computer_choice,
         result=result
     )
+
 
 @app.errorhandler(404)
 def not_found(e):
