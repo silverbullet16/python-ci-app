@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, abort
+from flask import Flask, jsonify, abort, render_template
 app = Flask(__name__)
 
 
@@ -10,7 +10,11 @@ def square_number(n):
 
 @app.route('/')
 def home():
-    return jsonify(message="Welcome to the Python CI/CD Demo App!")
+    data = {
+        "title": "Python CI/CD Web Flask Application",
+        "message": "done with Github Actions CI/CD Deployment to EC2 Amazon Linux!",
+    }
+    return render_template('index.html', data=data)
 
 
 @app.route('/health')
