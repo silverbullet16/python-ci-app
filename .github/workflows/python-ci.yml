@@ -1,4 +1,4 @@
-name: CI/CD to EC2 Amazon Linux
+name: CI/CD to EC2 Amazon Linux by Kenneth
 
 on:
   push:
