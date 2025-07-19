@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, abort, render_template
+from flask import Flask, jsonify, abort, render_template, request
+import random
 app = Flask(__name__)
 
 
@@ -22,14 +23,31 @@ def health_check():
     return jsonify(status="healthy")
 
 
-@app.route('/square/<int:number>', methods=['GET'])
-def square(number):
-    try:
-        result = square_number(number)
-        return jsonify(number=number, square=result)
-    except ValueError as e:
-        abort(400, description=str(e))
+@app.route('/play', methods=['POST'])
+def play():
+    data = request.get_json()
+    user_choice = data.get('choice')
+    options = ['rock', 'paper', 'scissors']
 
+    if user_choice not in options:
+        return jsonify(error="Invalid choice"), 400
+
+    computer_choice = random.choice(options)
+
+    if user_choice == computer_choice:
+        result = "It's a tie!"
+    elif (user_choice == 'rock' and computer_choice == 'scissors') or \
+         (user_choice == 'paper' and computer_choice == 'rock') or \
+         (user_choice == 'scissors' and computer_choice == 'paper'):
+        result = "You win!"
+    else:
+        result = "You lose!"
+
+    return jsonify(
+        user_choice=user_choice,
+        computer_choice=computer_choice,
+        result=result
+    )
 
 @app.errorhandler(404)
 def not_found(e):
