@@ -1,35 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{{ data.title }}</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                padding: 2rem;
-                background: #f4f4f4;
-                color: #333
-            }
-            .container {
-                background: #fff;
-                border-radius: 10px;
-                padding: 2rem;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                max-width: 600px;   
-                margin: 5rem auto;
-                text-align: center;
-            }
-            h1 {
-                color: #2c3350;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>{{ data.title }}</h1>
-            <p>{{ data.message }}</p>
-            <p>Current time: {{ data.current_time }}</p>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ data.title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: #f4f4f4;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            background: #fff;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 5rem auto;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 1.5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #2c3350;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ data.title }}</h1>
+        <p>{{ data.message }}</p>
+
+        <div>
+            <button data-choice="rock">⚫ Rock</button>
+            <button data-choice="paper">📄 Paper</button>
+            <button data-choice="scissors">✂️ Scissors</button>
         </div>
-    </body>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const buttons = document.querySelectorAll('button[data-choice]');
+        const resultDiv = document.getElementById('result');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const choice = button.getAttribute('data-choice');
+
+                fetch('/play', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ choice })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        resultDiv.textContent = data.error;
+                    } else {
+                        resultDiv.innerHTML = `
+                            You chose: <strong>${data.user_choice}</strong><br>
+                            Computer chose: <strong>${data.computer_choice}</strong><br>
+                            <em>${data.result}</em>
+                        `;
+                    }
+                })
+                .catch(() => {
+                    resultDiv.textContent = "Oops! Something went wrong.";
+                });
+            });
+        });
+    </script>
+</body>
 </html>
