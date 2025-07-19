@@ -12,7 +12,7 @@ def square_number(n):
 def home():
     data = {
         "title": "Python CI/CD Web Flask Application",
-        "message": "created with Github Actions CI/CD Deployment to EC2 Amazon Linux!",
+        "message": "Built and deployed through GitHub Actions CI/CD to EC2 Amazon Linux!",
     }
     return render_template('index.html', data=data)
 
