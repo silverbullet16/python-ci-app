@@ -12,7 +12,7 @@ def client():
 def test_home(client):
     res = client.get('/')
     assert res.status_code == 200
-    assert b"Welcome to the Python CI/CD Demo App!" in res.data
+    assert b"Welcome to GitHub Actions CI/CD Deployment to EC2 Amazon Linux!" in res.data
 
 
 def test_health_check(client):
