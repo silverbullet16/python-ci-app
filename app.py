@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, abort
 import random
 app = Flask(__name__)
 
@@ -57,7 +57,7 @@ def square(number):
         return jsonify(number=number, square=result)
     except ValueError as e:
         abort(400, description=str(e))
-   
+
 
 @app.errorhandler(404)
 def not_found(e):
