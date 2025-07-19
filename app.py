@@ -50,6 +50,15 @@ def play():
     )
 
 
+@app.route('/square/<int:number>', methods=['GET'])
+def square(number):
+    try:
+        result = square_number(number)
+        return jsonify(number=number, square=result)
+    except ValueError as e:
+        abort(400, description=str(e))
+   
+
 @app.errorhandler(404)
 def not_found(e):
     return jsonify(error=str(e)), 404
